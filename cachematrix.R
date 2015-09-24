@@ -2,33 +2,42 @@
 
 ## This function create getters and setters for a matrix and its inverse and stores it in a list 
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix()) 
+{
         m <- NULL
+        ## The value of X have been set
         set <- function(y) {
-                x <<- y
-                m <<- NULL
+        x <<- y
+        m <<- NULL
         }
+        
+        ## The value of X have been recieved using get method
         get <- function() x
-        setInverse <- function(inverse) m <<- inverse
-        getInverse <- function() m
+        
+        ## We are setting the inverse value for matrix
+        setinv <- function(sol) m <<- sol
+         ## We are getting the inverse value for matrix
+        getinv <- function() m
         list(set = set, get = get,
-             setInverse = setInverse,
-             getInverse = getInverse)
-
+             setinv = setinv,
+             getinv = getinv)
 }
 
-
-## Returns the inverse of matrix x from cache if it is available in cache else it will calculate
-
-cacheSolve <- function(x, ... ) {
-        ## Return a matrix that is the inverse of 'x'
-        m <- x$getInverse()
-                if(!is.null(m)) {
+cacheSolve <- function(x, ...) 
+{
+        m <- x$getinv()  ## getting the Inverse metrix value
+        if(!is.null(m)) { ## returning the cached value if it is present
                 message("getting cached data")
                 return(m)
         }
         data <- x$get()
-        m <- solve(data, ...)
-        x$setInverse(m)
-        m
+        if(nrow(data) == ncol(data)){ ## Finding for the square matrix
+            m <- solve(data, ...) ## Finding inverse of the matrix for the given data
+            x$setinv(m)
+            
+        }else{
+            message("Not a Square Matrix")
+        }
+        m   
+        
 }
